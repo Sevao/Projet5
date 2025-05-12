@@ -12,9 +12,10 @@ print(mot)  # Test, pour vérifier la fonctionnalité du programme. À enlever p
 
 max_tours = 10
 tours = 0
+condition = True
 
 # Boucle de jeu : donner un nombre de tours au joueur pour trouver le mot
-while tours < max_tours:
+while condition == True:
     print("Tour n°{}/{}".format((tours + 1), max_tours))
     
     mot_joueur = input("Entrez un mot de 7 lettres : ")
@@ -37,9 +38,12 @@ while tours < max_tours:
 
     if mot_joueur == mot:  # Si le mot a été trouvé, arrêter la partie et annoncer la victoire
         print("Félicitations, vous avez gagné et trouvé le mot en {} tours !".format((tours + 1)))
-        break  # Pas ouf, à enlever mais je n'ai pas trouvé comment sortir de la boucle avant la fin des tours sans le 'break'
+        condition = False
 
     tours += 1
+    if tours > max_tours :
+        condition = False
+        
 
 if tours == max_tours and mot_joueur != mot:  # Si le mot n'a pas été trouvé, arrêter la partie et annoncer la défaite, puis donner le mot qu'il fallait trouver
     print("Dommage, vous avez perdu. Le mot était : {}".format(mot))
