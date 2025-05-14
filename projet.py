@@ -5,19 +5,24 @@ mots = fichier.readlines()
 
 mot_7 = [elt.strip() for elt in mots if len(elt.strip()) == 7]  # Sélection des mots de 7 lettres
 
+joueurs = int(input('A combien jouez vous ?'))
+if joueur != 1 or joueur !=2 :
+    print("vous ne pouvez jouer qu'a un ou deux joueurs")
+
 i_mot = randint(0, len(mot_7) - 1)
 mot = mot_7[i_mot]  # Choix du mot de la partie
 
 print(mot)  # Test, pour vérifier la fonctionnalité du programme. À enlever pour jouer
 
-max_tours = 10
+max_tours = 6
 tours = 0
 condition = True
 
 # Boucle de jeu : donner un nombre de tours au joueur pour trouver le mot
 while condition == True:
     print("Tour n°{}/{}".format((tours + 1), max_tours))
-    
+    if joueur = 2 :
+        
     mot_joueur = input("Entrez un mot de 7 lettres : ")
     # Vérifier que le mot du joueur est bien de 7 lettres et que ce sont des lettres uniquement
     while len(mot_joueur) != 7 or not mot_joueur.isalpha(): # .isalpha pour verifier que c'est bien des lettres (str)
