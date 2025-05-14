@@ -28,11 +28,11 @@ while condition == True:
 
     for i in range(len(mot_joueur)):
         if mot_joueur[i] == mot[i]:
-            reponse.append('vert')  # Lettre correcte et bien placée
+            reponse.append(mot_joueur[i].upper())  # Lettre correcte et bien placée
         elif mot_joueur[i] in mot:
-            reponse.append('jaune')  # Lettre correcte mais mal placée
+            reponse.append(mot_joueur[i])  # Lettre correcte mais mal placée
         else:
-            reponse.append('gris')  # Lettre incorrecte
+            reponse.append('.')  # Lettre incorrecte
 
     print("Réponse : {}".format(reponse))
 
