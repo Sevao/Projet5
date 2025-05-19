@@ -132,3 +132,4 @@ stats_label.pack(pady=20)
 maj_stats_affichage()
 
 fenetre.mainloop()
+
