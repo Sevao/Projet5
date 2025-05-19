@@ -17,7 +17,10 @@ def calculer_affichage_stats():
     stats = charger_stats()
     parties = stats["parties"]
     victoires = stats["victoires"]
-    pourcentage = (victoires / parties * 100) if parties else 0
+    if parties > 0 :
+        pourcentage = (victoires / parties * 100)
+    else : 
+        pourcentage = 0
     moyenne = (stats["total_tours_pour_gagner"] / victoires) if victoires else 0
 
     texte = (
