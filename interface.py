@@ -115,7 +115,7 @@ fenetre.resizable(False, False)
 titre = tk.Label(fenetre, text="Devinez le mot de 7 lettres", font=("Helvetica", 16))
 titre.pack(pady=10)
 
-entree = tk.Entry(fenetre, font=("Helvetica", 16), justify='center')
+entree = tk.Entry(fenetre, font=("Linux Biolinum Keyboard O", 16), justify='center')
 entree.pack()
 
 bouton_valider = tk.Button(fenetre, text="Valider", command=verifier_mot, font=("Helvetica", 12))
@@ -132,4 +132,3 @@ stats_label.pack(pady=20)
 maj_stats_affichage()
 
 fenetre.mainloop()
-
