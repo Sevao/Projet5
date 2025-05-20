@@ -42,7 +42,7 @@ while condition == True:
         condition = False
 
     tours += 1
-    if tours > max_tours :
+    if tours > max_tours or tours == max_tours:
         condition = False
         
 
