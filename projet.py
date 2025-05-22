@@ -1,13 +1,13 @@
 from random import *
 
-fichier = open('liste_mots.txt', 'r')
+fichier = open('liste_mots.txt', 'r') #ouvre le fichier contenant les mots de la langue française
 mots = fichier.readlines()
 
 mot_7 = [elt.strip() for elt in mots if len(elt.strip()) == 7]  # Sélection des mots de 7 lettres
 
 joueurs = int(input('A combien jouez vous ?'))
 if joueur != 1 or joueur !=2 :
-    print("vous ne pouvez jouer qu'a un ou deux joueurs")
+    print("vous ne pouvez jouer qu'a un ou deux joueurs") #faut changer ça nan ?
 
 i_mot = randint(0, len(mot_7) - 1)
 mot = mot_7[i_mot]  # Choix du mot de la partie
