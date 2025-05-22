@@ -1,22 +1,24 @@
-import tkinter as tk
+import tkinter as tk #import du module d'interface graphique
 from tkinter import messagebox
 from random import randint
+
+# import des autres fichiers:
 from stats_manager import *
 from interface import *
 from terminal import *
 
 
-def lancer_terminal():
+def lancer_terminal(): # si le joueur choisit de jouer dans le terminal
 	fenetre.destroy()  # Ferme la fenêtre Tkinter
 	mode_terminal()    # Lance le jeu en mode terminal
 	
-def lancer_interface() :
+def lancer_interface() : # s'il choisit de jouer dans l'interface graphique
 	fenetre.destroy()  # Ferme la fenêtre Tkinter
 	mode_interface()   # Lance le jeu en mode terminal
 	
 	
 	
-def joueursolo():
+def joueursolo(): # si le joueur joue tout seul
 	
 	affichage()
 		
@@ -31,7 +33,7 @@ def joueursolo():
 
 
 
-def joueurduo():
+def joueurduo(): # si deux joueurs s'affrontent
 	
 	affichage()
 	
@@ -44,7 +46,7 @@ def joueurduo():
 
 
 
-def accueil():
+def accueil(): #en cas de retour à l'accueil
 	
 	affichage()
 
@@ -56,7 +58,7 @@ def accueil():
 	
 	
 
-def affichage():
+def affichage(): # affichage de base
 	for widget in fenetre.winfo_children():
 		widget.destroy()
 		
