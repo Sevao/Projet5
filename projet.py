@@ -1,54 +1,104 @@
-from random import *
+import tkinter as tk
+from tkinter import messagebox
+from random import randint
+from stats_manager import *
+from interface import *
 
-fichier = open('liste_mots.txt', 'r') #ouvre le fichier contenant les mots de la langue française
-mots = fichier.readlines()
 
-mot_7 = [elt.strip() for elt in mots if len(elt.strip()) == 7]  # Sélection des mots de 7 lettres
 
-joueurs = int(input('A combien jouez vous ?'))
-if joueur != 1 or joueur !=2 :
-    print("vous ne pouvez jouer qu'a un ou deux joueurs") #faut changer ça nan ?
+# Lance le jeu en version terminal après avoir fermé la fenêtre Tkinter
+def lancer_terminal():
+	fenetre.destroy()  # Ferme la fenêtre Tkinter
+	mode_terminal()    # Lance le jeu en mode terminal
 
-i_mot = randint(0, len(mot_7) - 1)
-mot = mot_7[i_mot]  # Choix du mot de la partie
 
-print(mot)  # Test, pour vérifier la fonctionnalité du programme. À enlever pour jouer
+# Lance le jeu en version interface graphique après avoir fermé la fenêtre Tkinter
+def lancer_interface(nbre_tours) :
+	mode_interface(nbre_tours, fenetre)   # Lance le jeu en mode interface
+	
+	
+# Menu pour choisir le niveau de difficulté (facile, normal, difficile)
+def niveaux():
+	
+	affichage()
+	
+	bouton_facile = tk.Button(fenetre, text="Mode Facile (10 tours de jeu)", command=lambda: messagebox.showinfo("Information", "Mode facile bientôt disponible."), font=("Helvetica", 25))
+	bouton_facile.pack(pady=20)
+	
+	bouton_normal = tk.Button(fenetre, text="Mode Normal (6 tours de jeu)", command=lambda : lancer_interface(6), font=("Helvetica", 25))
+	bouton_normal.pack(pady=50)
+	
+	bouton_difficile = tk.Button(fenetre, text="Mode Difficile (4 tours de jeu)", command=lambda : lancer_interface(4), font=("Helvetica", 25))
+	bouton_difficile.pack(pady=10)
+	
+	
+	bouton_retour = tk.Button(fenetre, text="Retour", command=joueursolo, font=("Helvetica", 15))
+	bouton_retour.pack(pady=10)
 
-max_tours = 6
-tours = 0
-condition = True
 
-# Boucle de jeu : donner un nombre de tours au joueur pour trouver le mot
-while condition == True:
-    print("Tour n°{}/{}".format((tours + 1), max_tours))
-    if joueur = 2 :
-        
-    mot_joueur = input("Entrez un mot de 7 lettres : ")
-    # Vérifier que le mot du joueur est bien de 7 lettres et que ce sont des lettres uniquement
-    while len(mot_joueur) != 7 or not mot_joueur.isalpha(): # .isalpha pour verifier que c'est bien des lettres (str)
-        print("Le mot doit être composé de 7 lettres, sans chiffres ni caractère spéciaux.")
-        mot_joueur = input("Entrez un mot de 7 lettres : ")
+# Menu pour choisir entre le jeu en terminal ou en interface graphique
+def joueursolo():
+	
+	affichage()
+		
+	bouton_terminal = tk.Button(fenetre, text="Terminal de commande", command=lancer_terminal, font=("Helvetica", 25))
+	bouton_terminal.pack(pady=60)
 
-    reponse = []
+	bouton_interface = tk.Button(fenetre, text="Interface Graphique", command=niveaux, font=("Helvetica", 25))
+	bouton_interface.pack(pady=55)
+	
+	bouton_retour = tk.Button(fenetre, text="Retour", command=lambda : accueil(fenetre), font=("Helvetica", 15))
+	bouton_retour.pack(pady=10)
 
-    for i in range(len(mot_joueur)):
-        if mot_joueur[i] == mot[i]:
-            reponse.append(mot_joueur[i].upper())  # Lettre correcte et bien placée
-        elif mot_joueur[i] in mot:
-            reponse.append(mot_joueur[i])  # Lettre correcte mais mal placée
-        else:
-            reponse.append('.')  # Lettre incorrecte
 
-    print("Réponse : {}".format(reponse))
+# Menu pour le mode deux joueurs
+def joueurduo():
+	
+	affichage()
+	
+	bouton_interface = tk.Button(fenetre, text="Interface Graphique", command=lambda: messagebox.showinfo("Information", "Mode 2 joueurs bientôt disponible."), font=("Helvetica", 25))
+	bouton_interface.pack(pady=150)
+	
+	bouton_retour = tk.Button(fenetre, text="Retour", command=lambda : accueil(fenetre), font=("Helvetica", 15))
+	bouton_retour.pack(pady=10)
 
-    if mot_joueur == mot:  # Si le mot a été trouvé, arrêter la partie et annoncer la victoire
-        print("Félicitations, vous avez gagné et trouvé le mot en {} tours !".format((tours + 1)))
-        condition = False
 
-    tours += 1
-    if tours > max_tours :
-        condition = False
-        
 
-if tours == max_tours and mot_joueur != mot:  # Si le mot n'a pas été trouvé, arrêter la partie et annoncer la défaite, puis donner le mot qu'il fallait trouver
-    print("Dommage, vous avez perdu. Le mot était : {}".format(mot))
+# Écran d'accueil principal avec les options 1 ou 2 joueurs
+def accueil(fenetre):
+	
+	affichage()
+
+	bouton_1J = tk.Button(fenetre, text="1 Joueur", command=joueursolo, font=("Helvetica", 25))
+	bouton_1J.pack(pady=60)
+
+	bouton_2J = tk.Button(fenetre, text="2 Joueurs", command=joueurduo, font=("Helvetica", 25))
+	bouton_2J.pack(pady=55)
+	
+	bouton_retour = tk.Button(fenetre, text="Quitter", command=fenetre.destroy, font=("Helvetica", 15)) 
+	bouton_retour.pack(pady=10)
+	
+	
+	
+# Fonction utilisée pour réinitialiser l'interface (efface tous les widgets de la fenêtre, et en redefinit de nouveaux)
+def affichage():
+	for widget in fenetre.winfo_children():
+		widget.destroy()
+		
+	titre = tk.Label(fenetre, text="Motus Mania", font=("Helvetica", 30))
+	titre.pack(pady=10)
+
+	sous_titre = tk.Label(fenetre, text="Trouvez le mot de 7 lettres", font=("Helvetica", 10))
+	sous_titre.pack(pady=10)
+	
+
+# Configuration de la fenêtre principale Tkinter
+fenetre = tk.Tk()
+fenetre.title("Motus Mania")
+fenetre.geometry("540x550")
+fenetre.resizable(False, False)
+
+accueil(fenetre)
+
+fenetre.mainloop()
+
