@@ -6,95 +6,47 @@ from interface import *
 from terminal import *
 from deux_joueurs import *
 
+couleur_fond = "#ff9999"  # Rouge-rose clair
 
-# Lance le jeu en version terminal après avoir fermé la fenêtre Tkinter
 def lancer_terminal():
-	fenetre.destroy()  # Ferme la fenêtre Tkinter
-	mode_terminal()    # Lance le jeu en mode terminal
+    fenetre.destroy()
+    mode_terminal()
 
-
-# Lance le jeu en version interface graphique après avoir fermé la fenêtre Tkinter
 def lancer_interface(nbre_tours):
     mode_interface(nbre_tours, fenetre, accueil)
 
-	
-	
-# Menu pour choisir le niveau de difficulté (facile, normal, difficile)
 def niveaux():
-	
-	affichage()
-	
-	bouton_facile = tk.Button(fenetre, text="Mode Facile (10 tours de jeu)", command=lambda : lancer_interface(10), font=("Helvetica", 25))
-	bouton_facile.pack(pady=20)
-	
-	bouton_normal = tk.Button(fenetre, text="Mode Normal (6 tours de jeu)", command=lambda : lancer_interface(6), font=("Helvetica", 25))
-	bouton_normal.pack(pady=50)
-	
-	bouton_difficile = tk.Button(fenetre, text="Mode Difficile (4 tours de jeu)", command=lambda : lancer_interface(4), font=("Helvetica", 25))
-	bouton_difficile.pack(pady=10)
-	
-	
-	bouton_retour = tk.Button(fenetre, text="Retour", command=joueursolo, font=("Helvetica", 15))
-	bouton_retour.pack(pady=10)
+    affichage()
+    tk.Button(fenetre, text="Mode Facile (10 tours de jeu)", command=lambda: lancer_interface(10), font=("Helvetica", 25), bg=couleur_fond).pack(pady=20)
+    tk.Button(fenetre, text="Mode Normal (6 tours de jeu)", command=lambda: lancer_interface(6), font=("Helvetica", 25), bg=couleur_fond).pack(pady=50)
+    tk.Button(fenetre, text="Mode Difficile (4 tours de jeu)", command=lambda: lancer_interface(4), font=("Helvetica", 25), bg=couleur_fond).pack(pady=10)
+    tk.Button(fenetre, text="Retour", command=joueursolo, font=("Helvetica", 15), bg=couleur_fond).pack(pady=10)
 
-
-# Menu pour choisir entre le jeu en terminal ou en interface graphique
 def joueursolo():
-	
-	affichage()
-		
-	bouton_terminal = tk.Button(fenetre, text="Terminal de commande", command=lancer_terminal, font=("Helvetica", 25))
-	bouton_terminal.pack(pady=60)
+    affichage()
+    tk.Button(fenetre, text="Terminal de commande", command=lancer_terminal, font=("Helvetica", 25), bg=couleur_fond).pack(pady=60)
+    tk.Button(fenetre, text="Interface Graphique", command=niveaux, font=("Helvetica", 25), bg=couleur_fond).pack(pady=55)
+    tk.Button(fenetre, text="Retour", command=accueil, font=("Helvetica", 15), bg=couleur_fond).pack(pady=10)
 
-	bouton_interface = tk.Button(fenetre, text="Interface Graphique", command=niveaux, font=("Helvetica", 25))
-	bouton_interface.pack(pady=55)
-	
-	bouton_retour = tk.Button(fenetre, text="Retour", command=accueil, font=("Helvetica", 15))
-	bouton_retour.pack(pady=10)
-
-
-# Menu pour le mode deux joueurs
 def joueurduo():
-	
-	affichage()
-	
-	bouton_interface = tk.Button(fenetre, text="Interface Graphique", command=lambda: mode_deux_joueurs(fenetre), font=("Helvetica", 25))
-	bouton_interface.pack(pady=150)
-	
-	bouton_retour = tk.Button(fenetre, text="Retour", command=accueil, font=("Helvetica", 15))
-	bouton_retour.pack(pady=10)
+    affichage()
+    tk.Button(fenetre, text="Interface Graphique", command=lambda: mode_deux_joueurs(fenetre), font=("Helvetica", 25), bg=couleur_fond).pack(pady=150)
+    tk.Button(fenetre, text="Retour", command=accueil, font=("Helvetica", 15), bg=couleur_fond).pack(pady=10)
 
-
-
-# Écran d'accueil principal avec les options 1 ou 2 joueurs
 def accueil():
-	
-	affichage()
+    affichage()
+    tk.Button(fenetre, text="1 Joueur", command=joueursolo, font=("Helvetica", 25), bg=couleur_fond).pack(pady=60)
+    tk.Button(fenetre, text="2 Joueurs", command=joueurduo, font=("Helvetica", 25), bg=couleur_fond).pack(pady=55)
+    tk.Button(fenetre, text="Quitter", command=fenetre.destroy, font=("Helvetica", 15), bg=couleur_fond).pack(pady=10)
 
-	bouton_1J = tk.Button(fenetre, text="1 Joueur", command=joueursolo, font=("Helvetica", 25))
-	bouton_1J.pack(pady=60)
-
-	bouton_2J = tk.Button(fenetre, text="2 Joueurs", command=joueurduo, font=("Helvetica", 25))
-	bouton_2J.pack(pady=55)
-	
-	bouton_retour = tk.Button(fenetre, text="Quitter", command=fenetre.destroy, font=("Helvetica", 15))
-	bouton_retour.pack(pady=10)
-	
-	
-	
-# Fonction utilisée pour réinitialiser l'interface (efface tous les widgets de la fenêtre, et en redefinit de nouveaux)
 def affichage():
-	for widget in fenetre.winfo_children():
-		widget.destroy()
-		
-	titre = tk.Label(fenetre, text="Motus Mania", font=("Helvetica", 30))
-	titre.pack(pady=10)
+    for widget in fenetre.winfo_children():
+        widget.destroy()
+    fenetre.config(bg=couleur_fond)
+    tk.Label(fenetre, text="Motus Mania", font=("Helvetica", 30), bg=couleur_fond).pack(pady=10)
+    tk.Label(fenetre, text="Trouvez le mot de 7 lettres", font=("Helvetica", 10), bg=couleur_fond).pack(pady=10)
 
-	sous_titre = tk.Label(fenetre, text="Trouvez le mot de 7 lettres", font=("Helvetica", 10))
-	sous_titre.pack(pady=10)
-	
-
-# Configuration de la fenêtre principale Tkinter
+# Configuration de la fenêtre principale
 fenetre = tk.Tk()
 fenetre.title("Motus Mania")
 fenetre.geometry("540x550")
