@@ -23,7 +23,7 @@ def niveaux():
 	
 	affichage()
 	
-	bouton_facile = tk.Button(fenetre, text="Mode Facile (10 tours de jeu)", command=lambda: messagebox.showinfo("Information", "Mode facile bientôt disponible."), font=("Helvetica", 25))
+	bouton_facile = tk.Button(fenetre, text="Mode Facile (10 tours de jeu)", command=lambda : lancer_interface(10), font=("Helvetica", 25))
 	bouton_facile.pack(pady=20)
 	
 	bouton_normal = tk.Button(fenetre, text="Mode Normal (6 tours de jeu)", command=lambda : lancer_interface(6), font=("Helvetica", 25))
@@ -97,7 +97,6 @@ def affichage():
 fenetre = tk.Tk()
 fenetre.title("Motus Mania")
 fenetre.geometry("540x550")
-fenetre.resizable(False, False)
 
 accueil()
 
