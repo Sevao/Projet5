@@ -4,6 +4,7 @@ from random import randint
 from stats_manager import *
 from interface import *
 from terminal import *
+from deux_joueurs import *
 
 
 # Lance le jeu en version terminal après avoir fermé la fenêtre Tkinter
@@ -57,7 +58,7 @@ def joueurduo():
 	
 	affichage()
 	
-	bouton_interface = tk.Button(fenetre, text="Interface Graphique", command=lambda: messagebox.showinfo("Information", "Mode 2 joueurs bientôt disponible."), font=("Helvetica", 25))
+	bouton_interface = tk.Button(fenetre, text="Interface Graphique", command=lambda: mode_deux_joueurs(fenetre), font=("Helvetica", 25))
 	bouton_interface.pack(pady=150)
 	
 	bouton_retour = tk.Button(fenetre, text="Retour", command=accueil, font=("Helvetica", 15))
