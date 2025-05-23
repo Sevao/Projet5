@@ -2,7 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 from random import randint
 from stats_manager import *
-from tttt import *
+from interface import *
 from terminal import *
 
 
