@@ -128,7 +128,8 @@ def mode_interface(nbre_tours, fenetre, callback_accueil=None):
     entree.pack()
     entree.focus_set()
     
-    fenetre.bind('<Return>', lambda event: verifier_mot(fenetre, callback_accueil))
+    entree.bind("<Return>", lambda event: verifier_mot(fenetre, callback_accueil))
+    
 
     tk.Button(fenetre, text="Valider", command=lambda: verifier_mot(fenetre, callback_accueil), font=("Helvetica", 12)).pack(pady=10)
 
