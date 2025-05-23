@@ -1,79 +1,133 @@
-import tkinter as tk #import du module d'interface graphique
+import tkinter as tk
 from tkinter import messagebox
 from random import randint
-
-# import des autres fichiers:
 from stats_manager import *
-from interface import *
-from terminal import *
 
+def calculer_affichage_stats():
+    stats = charger_stats()
+    parties = stats["parties"]
+    victoires = stats["victoires"]
+    pourcentage = (victoires / parties * 100) if parties > 0 else 0
+    moyenne = (stats["total_tours_pour_gagner"] / victoires) if victoires else 0
 
-def lancer_terminal(): # si le joueur choisit de jouer dans le terminal
-	fenetre.destroy()  # Ferme la fenêtre Tkinter
-	mode_terminal()    # Lance le jeu en mode terminal
-	
-def lancer_interface() : # s'il choisit de jouer dans l'interface graphique
-	fenetre.destroy()  # Ferme la fenêtre Tkinter
-	mode_interface()   # Lance le jeu en mode terminal
-	
-	
-	
-def joueursolo(): # si le joueur joue tout seul
-	
-	affichage()
-		
-	bouton_terminal = tk.Button(fenetre, text="Terminal de commande", command=lancer_terminal, font=("Helvetica", 25))
-	bouton_terminal.pack(pady=60)
+    return (
+        f"🎮 Parties : {parties}    ✅ Victoires : {victoires}    "
+        f"📈 Taux : {pourcentage:.1f}%    ⏱️ Moyenne : {moyenne:.1f} tours"
+    )
 
-	bouton_interface = tk.Button(fenetre, text="Interface Graphique", command=lancer_interface, font=("Helvetica", 25))
-	bouton_interface.pack(pady=55)
-	
-	bouton_retour = tk.Button(fenetre, text="Retour", command=accueil, font=("Helvetica", 15))
-	bouton_retour.pack(pady=10)
+def maj_stats_affichage():
+    stats_label.config(text=calculer_affichage_stats())
 
+def rejouer(fenetre, callback_accueil):
+    mode_interface(max_tours, fenetre, callback_accueil)
 
+def verifier_mot(fenetre, callback_accueil):
+    global tours
 
-def joueurduo(): # si deux joueurs s'affrontent
-	
-	affichage()
-	
-	bouton_interface = tk.Button(fenetre, text="Interface Graphique", command=lambda: messagebox.showinfo("Information", "Mode 2 joueurs bientôt disponible."), font=("Helvetica", 25))
-	bouton_interface.pack(pady=150)
-	
-	bouton_retour = tk.Button(fenetre, text="Retour", command=accueil, font=("Helvetica", 15))
-	bouton_retour.pack(pady=10)
+    mot_joueur = entree.get().lower()
+    if len(mot_joueur) != 7 or not mot_joueur.isalpha():
+        messagebox.showerror("Erreur", "Le mot doit être composé de 7 lettres.")
+        return
 
+    ligne_frame = tk.Frame(resultats_frame)
+    ligne_frame.pack(pady=2)
 
+    mot_temp = list(mot_secret)
+    etats = [''] * 7
 
+    for i in range(7):
+        if mot_joueur[i] == mot_secret[i]:
+            etats[i] = 'vert'
+            mot_temp[i] = None
 
-def accueil(): #en cas de retour à l'accueil
-	
-	affichage()
+    for i in range(7):
+        if etats[i] == '' and mot_joueur[i] in mot_temp:
+            etats[i] = 'jaune'
+            mot_temp[mot_temp.index(mot_joueur[i])] = None
+        elif etats[i] == '':
+            etats[i] = 'gris'
 
-	bouton_1J = tk.Button(fenetre, text="1 Joueur", command=joueursolo, font=("Helvetica", 25))
-	bouton_1J.pack(pady=100)
+    for i in range(7):
+        couleur = {'vert': '#6aaa64', 'jaune': '#c9b458', 'gris': '#787c7e'}[etats[i]]
+        lettre_label = tk.Label(
+            ligne_frame,
+            text=mot_joueur[i].upper(),
+            font=("Helvetica", 16, "bold"),
+            width=2,
+            height=1,
+            bg=couleur,
+            fg="white",
+            relief="raised",
+            bd=2
+        )
+        lettre_label.pack(side="left", padx=2)
 
-	bouton_2J = tk.Button(fenetre, text="2 Joueurs", command=joueurduo, font=("Helvetica", 25))
-	bouton_2J.pack(pady=10)
-	
-	
+    stats = charger_stats()
+    stats["parties"] += 1
 
-def affichage(): # affichage de base
-	for widget in fenetre.winfo_children():
-		widget.destroy()
-		
-	titre = tk.Label(fenetre, text="Motus Mania", font=("Helvetica", 30))
-	titre.pack(pady=10)
+    if mot_joueur == mot_secret:
+        stats["victoires"] += 1
+        stats["total_tours_pour_gagner"] += (tours + 1)
+        sauvegarder_stats(stats)
+        messagebox.showinfo("Gagné", f"Bravo ! Vous avez trouvé le mot : {mot_secret.upper()} 🎉")
+        bouton_rejouer.pack(pady=10)
+        fin_de_partie(fenetre, callback_accueil)
+    else:
+        tours += 1
+        if tours >= max_tours:
+            sauvegarder_stats(stats)
+            messagebox.showinfo("Perdu", f"Dommage ! Le mot était : {mot_secret.upper()}")
+            bouton_rejouer.pack(pady=10)
+            fin_de_partie(fenetre, callback_accueil)
 
-	sous_titre = tk.Label(fenetre, text="Trouvez le mot de 7 lettres", font=("Helvetica", 10))
-	sous_titre.pack(pady=10)
-	
-# Interface Tkinter
-fenetre = tk.Tk()
-fenetre.title("Motus Mania")
-fenetre.geometry("540x550")
-fenetre.resizable(False, False)
+    maj_stats_affichage()
+    entree.delete(0, tk.END)
 
-accueil()
+def fin_de_partie(fenetre, callback_accueil):
+    for widget in fenetre.winfo_children():
+        widget.destroy()
 
-fenetre.mainloop()
+    tk.Label(fenetre, text="Fin de la partie", font=("Helvetica", 20, "bold")).pack(pady=20)
+    tk.Button(fenetre, text="Rejouer", command=lambda: rejouer(fenetre, callback_accueil), font=("Helvetica", 25)).pack(pady=20)
+
+    if callback_accueil:
+        tk.Button(fenetre, text="Accueil", command=lambda: callback_accueil(), font=("Helvetica", 25)).pack(pady=20)
+
+    tk.Button(fenetre, text="Quitter", command=fenetre.destroy, font=("Helvetica", 15)).pack(pady=20)
+
+def mode_interface(nbre_tours, fenetre, callback_accueil=None):
+    global mot_7, mot_secret, max_tours, tours
+    global entree, resultats_frame, bouton_rejouer, stats_label
+
+    try:
+        with open('liste_mots.txt', 'r') as fichier:
+            mots = [ligne.strip() for ligne in fichier.readlines()]
+    except FileNotFoundError:
+        messagebox.showerror("Erreur", "Fichier 'liste_mots.txt' introuvable.")
+        return
+
+    mot_7 = [mot for mot in mots if len(mot) == 7]
+    mot_secret = mot_7[randint(0, len(mot_7) - 1)]
+
+    max_tours = nbre_tours
+    tours = 0
+
+    for widget in fenetre.winfo_children():
+        widget.destroy()
+
+    tk.Label(fenetre, text="Devinez le mot de 7 lettres", font=("Helvetica", 16)).pack(pady=10)
+
+    entree = tk.Entry(fenetre, font=("Helvetica", 16), justify='center')
+    entree.pack()
+    entree.focus_set()
+
+    tk.Button(fenetre, text="Valider", command=lambda: verifier_mot(fenetre, callback_accueil), font=("Helvetica", 12)).pack(pady=10)
+
+    resultats_frame = tk.Frame(fenetre)
+    resultats_frame.pack()
+
+    bouton_rejouer = tk.Button(fenetre, text="Rejouer", command=lambda: rejouer(fenetre, callback_accueil), font=("Helvetica", 12, "bold"))
+
+    stats_label = tk.Label(fenetre, text="", font=("Helvetica", 10, "italic"))
+    stats_label.pack(pady=20)
+    maj_stats_affichage()
