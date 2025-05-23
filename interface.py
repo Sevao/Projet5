@@ -16,7 +16,11 @@ def calculer_affichage_stats():
     )
 
 def maj_stats_affichage():
-    stats_label.config(text=calculer_affichage_stats())
+    try:
+        if stats_label.winfo_exists():
+            stats_label.config(text=calculer_affichage_stats())
+    except:
+        pass  # évite l’erreur si le widget a été détruit
 
 def rejouer(fenetre, callback_accueil):
     mode_interface(max_tours, fenetre, callback_accueil)
@@ -81,7 +85,10 @@ def verifier_mot(fenetre, callback_accueil):
             fin_de_partie(fenetre, callback_accueil)
 
     maj_stats_affichage()
-    entree.delete(0, tk.END)
+    
+    if entree.winfo_exists():
+        entree.delete(0, tk.END)
+
 
 def fin_de_partie(fenetre, callback_accueil):
     for widget in fenetre.winfo_children():
@@ -120,6 +127,8 @@ def mode_interface(nbre_tours, fenetre, callback_accueil=None):
     entree = tk.Entry(fenetre, font=("Helvetica", 16), justify='center')
     entree.pack()
     entree.focus_set()
+    
+    fenetre.bind('<Return>', lambda event: verifier_mot(fenetre, callback_accueil))
 
     tk.Button(fenetre, text="Valider", command=lambda: verifier_mot(fenetre, callback_accueil), font=("Helvetica", 12)).pack(pady=10)
 
