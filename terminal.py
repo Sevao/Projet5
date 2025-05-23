@@ -11,7 +11,7 @@ def mode_terminal() :
 	i_mot = randint(0, len(mot_7) - 1)
 	mot = mot_7[i_mot]  # Choix du mot de la partie
 
-	print(mot)  # Test, pour vérifier la fonctionnalité du programme. À enlever pour jouer
+	#print(mot)  # Test, pour vérifier la fonctionnalité du programme. À enlever pour jouer
 
 	max_tours = 6
 	tours = 0
