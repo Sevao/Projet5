@@ -15,6 +15,10 @@ def lancer_terminal():
 def lancer_interface(nbre_tours):
     mode_interface(nbre_tours, fenetre, accueil)
 
+def quitter():
+    if messagebox.askokcancel("Quitter", "Voulez-vous vraiment quitter ?"):
+        fenetre.destroy()
+
 def niveaux():
     affichage()
     tk.Button(fenetre, text="Mode Facile (10 tours de jeu)", command=lambda: lancer_interface(10), font=("Helvetica", 25), bg=couleur_fond).pack(pady=20)
@@ -37,7 +41,7 @@ def accueil():
     affichage()
     tk.Button(fenetre, text="1 Joueur", command=joueursolo, font=("Helvetica", 25), bg=couleur_fond).pack(pady=60)
     tk.Button(fenetre, text="2 Joueurs", command=joueurduo, font=("Helvetica", 25), bg=couleur_fond).pack(pady=55)
-    tk.Button(fenetre, text="Quitter", command=fenetre.destroy, font=("Helvetica", 15), bg=couleur_fond).pack(pady=10)
+    tk.Button(fenetre, text="Quitter", command=quitter, font=("Helvetica", 15), bg=couleur_fond).pack(pady=10)
 
 def affichage():
     for widget in fenetre.winfo_children():
@@ -50,6 +54,7 @@ def affichage():
 fenetre = tk.Tk()
 fenetre.title("Motus Mania")
 fenetre.geometry("540x550")
+fenetre.iconbitmap("motus.ico")
 
 accueil()
 
