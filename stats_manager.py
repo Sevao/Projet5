@@ -4,22 +4,26 @@ import os
 stats_file = "stats.json"
 stats_file_duo = "stats_duo.json"
 
-def charger_stats(): #si un fichier statistique existe, celui-ci est récupéré
+# Charge les statistiques solo depuis le fichier, ou crée une structure vide si le fichier n'existe pas
+def charger_stats():
     if os.path.exists(stats_file):
         with open(stats_file, "r") as f:
             return json.load(f)
-    else: # si aucun fichier statistique existe, création d'un nouveau
+    else:
+        # Retourne un dictionnaire initialisé si aucun fichier statistique n'existe encore
         return {
             "parties": 0,
             "victoires": 0,
             "total_tours_pour_gagner": 0
         }
 
-def sauvegarder_stats(stats): # sauvegarde les statistiques d'une partie à l'autre
+# Sauvegarde les statistiques solo dans un fichier JSON
+def sauvegarder_stats(stats):
     with open(stats_file, "w") as f:
         json.dump(stats, f)
 
-def afficher_stats_tk(tk_messagebox): #définition et affichage des statistiques du joueur
+# Affiche les statistiques solo dans une boîte de dialogue Tkinter
+def afficher_stats_tk(tk_messagebox):
     stats = charger_stats()
     parties = stats["parties"]
     victoires = stats["victoires"]
@@ -32,25 +36,26 @@ def afficher_stats_tk(tk_messagebox): #définition et affichage des statistiques
         f"Taux de réussite : {pourcentage:.1f}%\n"
         f"Nombre moyen de tours pour gagner : {moyenne:.1f}"
     )
-    
 
-
-
+# Charge les statistiques du mode duo depuis le fichier, ou crée une structure vide si le fichier n'existe pas
 def charger_stats_duo():
     if os.path.exists(stats_file_duo):
         with open(stats_file_duo, "r") as f:
             return json.load(f)
     else:
+        # Structure initiale pour le mode deux joueurs
         return {
             "parties": 0,
             "victoires_joueur_1": 0,
             "victoires_joueur_2": 0
         }
 
+# Sauvegarde les statistiques duo dans un fichier JSON
 def sauvegarder_stats_duo(stats):
     with open(stats_file_duo, "w") as f:
         json.dump(stats, f)
 
+# Calcule une chaîne formatée affichant les statistiques du mode duo
 def calculer_affichage_stats_duo():
     stats = charger_stats_duo()
     parties = stats["parties"]
@@ -62,4 +67,3 @@ def calculer_affichage_stats_duo():
     return (
         f"🎮 Parties : {parties}    🟦 J1 : {v1} victoires ({p1:.1f}%)    🟩 J2 : {v2} victoires ({p2:.1f}%)"
     )
-
