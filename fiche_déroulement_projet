@@ -1,0 +1,16 @@
+Descriptif conception Motus
+Ferdinand et Sevan
+
+
+1) conception du jeu dans le terminal (Ferdinand et Sévan):
+Nous avons d’abord mis au point le jeu dans le terminal de commande en le liant avec le fichier des mots. Pour le moment le jeu n’est jouable qu’a un joueur .
+
+2) Mise en place de l’interface graphique tkinter (Sévan) :
+Nous avons ensuite mis en place l’interface graphique en partie et implémenté le jeu à 1 joueur dans l’interface. Création également de la quasi-entièreté des pages pythons pour séparer les différents aspects du jeu.
+
+3) Création du mode deux joueur (Ferdinand) :
+Ensuite nous avons crée le mode deux joueurs avecun système de timer et avons implémenté un système de statistiques au jeu.
+
+4) Finalisation de l’interface graphique et conversion en éxécutable (Sévan et Ferdinand) :
+Nous avons ensuite amélioré l’interface graphique avec des boutons permettant de retourner a la page précédente ou a la page d’accueil, des couleures de fond pour le mode 2 joueur, etc.
+Conversion du fichier en éxécutable (.exe)
